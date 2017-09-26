@@ -16,42 +16,41 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let urlPath = NSBundle.mainBundle().pathForResource("smu-campus", ofType: "jpg")
-        let fileURL = NSURL.fileURLWithPath(urlPath!)
+        let urlPath = Bundle.main.path(forResource: "smu-campus", ofType: "jpg")
+        let fileURL = NSURL.fileURL(withPath: urlPath!)
         
-        let beginImage = CIImage(contentsOfURL: fileURL)
+        let beginImage = CIImage(contentsOf: fileURL)
         
         filter = CIFilter(name: "CIBloom")!
         filter.setValue(beginImage, forKey: kCIInputImageKey)
         filter.setValue(0.5, forKey: kCIInputIntensityKey)
         filter.setValue(20, forKey: "inputRadius")
         
-        let newImage = UIImage(CIImage: filter.outputImage!)
+        let newImage = UIImage(ciImage: filter.outputImage!)
         self.imageView.image = newImage
     
     }
     
     
-    @IBAction func loadImage(sender: UIButton) {
+    @IBAction func loadImage(_ sender: Any) {
         let picker = UIImagePickerController()
         picker.delegate = self
-        picker.sourceType = .Camera
-        self.presentViewController(picker, animated: true, completion: nil)
-        
+        picker.sourceType = .camera
+        self.present(picker, animated: true, completion: nil)
     }
     
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true, completion: nil)
     }
     
 
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        self.dismiss(animated: true, completion: nil)
         
         let image = info["UIImagePickerControllerOriginalImage"] as! UIImage
         let beginImage = CIImage(image: image)
         filter.setValue(beginImage, forKey: kCIInputImageKey)
-        let newImage = UIImage(CIImage: filter.outputImage!, scale: CGFloat(1.0), orientation: image.imageOrientation)
+        let newImage = UIImage(ciImage: filter.outputImage!, scale: CGFloat(1.0), orientation: image.imageOrientation)
         self.imageView.image = newImage
         
     }
