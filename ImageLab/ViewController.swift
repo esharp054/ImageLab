@@ -122,7 +122,7 @@ class ViewController: UIViewController   {
             self.flashSlider.value = 1.0
         }
         else{
-            self.flashSlider.value = 0.0
+            self.flashSlider.value = 0.0 
         }
     }
     
